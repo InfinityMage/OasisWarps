@@ -1,0 +1,32 @@
+# Should warps only be able to be used if the warp location is considered safe (air, no lava etc)?
+safe-warp: true
+# Maxmium length of warp name (Setting this higher than 32 is not recommended)
+max-length: 20
+# Minimum length of warp name (Do not set lower than 1)
+min-length: 3
+
+# Messages
+messages:
+  incorrect-usage: "&cIncorrect Usage! {USAGE}"
+  already-exists: "&cSorry, but that warp already exists."
+  no-permission: "&cYou do not have permission for that command!"
+  no-permission-action: "&cYou do not have the required permissions to {ACTION}!"
+  warp-created: "&3Warp &b{WARP} &3created."
+  warp-deleted: "&3Warp &b{WARP} &3deleted."
+  no-exist: "&cSorry, but that warp does not exist."
+  warp-tp: "&3Teleporting to &b{WARP}&3..."
+  warp-tp-other: "&3Teleporting &f{USER} &3to &b{WARP}&3..."
+  not-online: "&cThat player is not online."
+  long-name: "&cSorry, but the maximum length of a warp name is {MAX} characters."
+  short-name: "&cSorry, but the minimum length of a warp name is {MIN} characters."
+  illegal-char: "&cSorry, but warps can only use alphanumeric characters and underscores."
+  warp-list: "&bWarps: &f"
+
+# Custom Setwarp Limits
+# To limit the number of warps a user can create, give them the permission oasiswarps.limit.[name]
+setwarp-limits:
+  noble: 1
+  magician: 2
+  lord: 4
+  imperial: 6
+  titan: 9

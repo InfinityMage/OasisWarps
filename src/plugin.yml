@@ -1,0 +1,13 @@
+name: OasisWarps
+version: 1.0.0
+author: InfinityMage / Elliot Bailey
+description: A standalone warp manager built for the OasisCraft server.
+main: me.elliotbailey.oasiswarps.OasisWarps
+api-version: 1.14
+commands:
+  setwarp:
+  warp:
+  debug:
+  warps:
+    aliases: [listwarps]
+  delwarp:
