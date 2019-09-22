@@ -1,0 +1,5 @@
+*.iml
+*.class
+*.jar
+.idea
+/out/production
