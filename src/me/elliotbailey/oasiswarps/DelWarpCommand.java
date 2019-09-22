@@ -66,6 +66,8 @@ public class DelWarpCommand implements CommandExecutor {
 
                     }
 
+                } else {
+                    p.sendMessage(Util.format(plugin.getConfig().getString("messages.no-exist")));
                 }
 
             }
