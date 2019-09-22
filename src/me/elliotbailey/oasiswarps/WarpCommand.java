@@ -67,8 +67,10 @@ public class WarpCommand implements CommandExecutor {
 
                             otherPlayer.teleport(new Location(
                                     p.getServer().getWorld(plugin.getWarps().getString(warpName+".world")),
-                                    plugin.getWarps().getDouble(warpName+".x"), plugin.getWarps().getDouble(warpName+".y"),
-                                    plugin.getWarps().getDouble(warpName+".z"), plugin.getWarps().getInt(warpName+".yaw"),
+                                    plugin.getWarps().getDouble(warpName+".x"),
+                                    plugin.getWarps().getDouble(warpName+".y"),
+                                    plugin.getWarps().getDouble(warpName+".z"),
+                                    plugin.getWarps().getInt(warpName+".yaw"),
                                     plugin.getWarps().getInt(warpName+".pitch")
                             ), PlayerTeleportEvent.TeleportCause.PLUGIN);
 
