@@ -40,7 +40,8 @@ public class ListWarpsCommand implements CommandExecutor {
                 else warp_list += x + "&f, ";
             }
 
-            p.sendMessage(Util.format(warp_list.substring(0, warp_list.length() - 2)));
+            if (warpList.size() == 0) p.sendMessage(Util.format(plugin.getConfig().getString("messages.warp-list-none")));
+            else p.sendMessage(Util.format(warp_list.substring(0, warp_list.length() - 2)));
 
             return true;
 
