@@ -21,6 +21,7 @@ messages:
   short-name: "&cSorry, but the minimum length of a warp name is {MIN} characters."
   illegal-char: "&cSorry, but warps can only use alphanumeric characters and underscores."
   warp-list: "&bWarps: &f"
+  limit-reached: "&cSorry, but you are not able to set any more warps."
 
 # Custom Setwarp Limits
 # To limit the number of warps a user can create, give them the permission oasiswarps.limit.[name]
