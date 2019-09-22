@@ -3,6 +3,7 @@ package me.elliotbailey.oasiswarps;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,10 +16,12 @@ public class ListWarpsCommand implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender p, Command cmd, String label, String[] args) {
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         String cmdName = cmd.getName().toLowerCase();
 
         if (!cmdName.equals("warps")) return false;
+
+        Player p = (Player) sender;
 
         if (p.hasPermission("oasiswarps.listwarps")) {
 
@@ -28,11 +31,14 @@ public class ListWarpsCommand implements CommandExecutor {
                 if(!warp.contains(".")) warpList.add(warp);
             }
 
-            String warp_list = "&bWarps: &f";
+            String warp_list = plugin.getConfig().getString("messages.warp-list");
 
             Collections.sort(warpList);
 
-            for (String x : warpList) warp_list += x + ", ";
+            for (String x : warpList) {
+                if (plugin.getWarps().getString(x+".owner").equals(p.getUniqueId().toString())) warp_list += "&a"+ x + "&f, ";
+                else warp_list += x + "&f, ";
+            }
 
             p.sendMessage(Util.format(warp_list.substring(0, warp_list.length() - 2)));
 
