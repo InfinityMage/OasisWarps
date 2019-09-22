@@ -11,22 +11,3 @@ commands:
   warps:
     aliases: [listwarps]
   delwarp:
-permissions:
-  oasiswarps.warp:
-    description: Allows the player to use warps
-    default: op
-    children:
-      oasiswarps.warp.others: true
-  oasiswarps.setwarp:
-    description: Allows the player to set warps
-    default: op
-    children:
-      setwarp.limit.bypass: true
-  oasiswarps.delwarp:
-    description: Allows the player to delete warps
-    default: op
-    children:
-      oasiswarps.delwarp.others: true
-  oasiswarps.listwarps:
-    description: Allows the player to list the server warps
-    default: op
