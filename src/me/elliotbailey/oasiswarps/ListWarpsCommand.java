@@ -21,6 +21,11 @@ public class ListWarpsCommand implements CommandExecutor {
 
         if (!cmdName.equals("warps")) return false;
 
+        if (!(sender instanceof Player)) {
+            sender.sendMessage(Util.format("&cThis command cannot be used in the console!"));
+            return true;
+        }
+
         Player p = (Player) sender;
 
         if (p.hasPermission("oasiswarps.listwarps")) {
