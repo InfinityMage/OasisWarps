@@ -14,6 +14,33 @@ public class WarpCommand implements CommandExecutor {
         this.plugin = plugin;
     }
 
+    private Boolean isLocationSafe(Location location) {
+
+        Boolean warpSafe = true;
+
+        // Check for 2 air/unsolid blocks at warp with a solid block below
+        if (location.add(0, 1, 0).getBlock().getType().isSolid() || location.getBlock().getType().toString() == "WATER") warpSafe = false;
+        location.subtract(0, 1, 0);
+        if (location.getBlock().getType().isSolid()) warpSafe = false;
+        if (!location.subtract(0, 1, 0).getBlock().getType().isSolid() && !location.getBlock().getType().toString().contains("CARPET") && !location.subtract(0, 1, 0).getBlock().getType().isSolid() && !location.subtract(0, 1, 0).getBlock().getType().isSolid()) warpSafe = false;
+        location.add(0, 3, 0);
+
+        String[] dangerous_blocks = {"LAVA","CACTUS","SWEET_BERRY_BUSH","WITHER_ROSE","MAGMA_BLOCK","COBWEB","CAMPFIRE","FIRE"};
+
+        for (Double[] loc : Util.safeLocations()) {
+            for (String block : dangerous_blocks) {
+                if (location.add(loc[0], loc[1], loc[2]).getBlock().getType().toString().equals(block)) {
+                    warpSafe = false;
+                }
+                location.subtract(loc[0], loc[1], loc[2]);
+            }
+        }
+
+        if (warpSafe) return true;
+        else return false;
+
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         String cmdName = cmd.getName().toLowerCase();
@@ -41,8 +68,6 @@ public class WarpCommand implements CommandExecutor {
                         // Warp safety check
                         if (plugin.getConfig().getBoolean("safe-warp")) {
 
-                            Boolean warpSafe = true;
-
                             Location warpLocation = new Location(
                                     plugin.getServer().getWorld(plugin.getWarps().getString(warpName+".world")),
                                     plugin.getWarps().getDouble(warpName+".x"),
@@ -50,25 +75,7 @@ public class WarpCommand implements CommandExecutor {
                                     plugin.getWarps().getDouble(warpName+".z")
                             );
 
-                            // Check for 2 air/unsolid blocks at warp with a solid block below
-                            if (warpLocation.add(0, 1, 0).getBlock().getType().isSolid() || warpLocation.getBlock().getType().toString() == "WATER") warpSafe = false;
-                            warpLocation.subtract(0, 1, 0);
-                            if (warpLocation.getBlock().getType().isSolid()) warpSafe = false;
-                            if (!warpLocation.subtract(0, 1, 0).getBlock().getType().isSolid() && !warpLocation.getBlock().getType().toString().contains("CARPET") && !warpLocation.subtract(0, 1, 0).getBlock().getType().isSolid() && !warpLocation.subtract(0, 1, 0).getBlock().getType().isSolid()) warpSafe = false;
-                            warpLocation.add(0, 3, 0);
-
-                            String[] dangerous_blocks = {"LAVA","CACTUS","SWEET_BERRY_BUSH","WITHER_ROSE","MAGMA_BLOCK","COBWEB","CAMPFIRE","FIRE"};
-
-                            for (Double[] loc : Util.safeWarpLocations()) {
-                                for (String block : dangerous_blocks) {
-                                    if (warpLocation.add(loc[0], loc[1], loc[2]).getBlock().getType().toString().equals(block)) {
-                                        warpSafe = false;
-                                    }
-                                    warpLocation.subtract(loc[0], loc[1], loc[2]);
-                                }
-                            }
-
-                            if (!warpSafe) {
+                            if (!isLocationSafe(warpLocation)) {
                                 p.sendMessage(Util.format(plugin.getConfig().getString("messages.unsafe")));
                                 return true;
                             }
