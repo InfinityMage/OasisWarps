@@ -4,6 +4,18 @@ safe-warp: true
 max-length: 20
 # Minimum length of warp name (Do not set lower than 1)
 min-length: 3
+# How many warps should be displayed on each page in /warps
+warp-list-amount: 25
+
+# Custom Setwarp Limits
+# To limit the number of warps a user can create, give them the permission oasiswarps.limit.[name]
+# To bypass the limit, use the permission oasiswarps.limit.bypass
+setwarp-limits:
+  noble: 1
+  magician: 2
+  lord: 4
+  imperial: 6
+  titan: 9
 
 # Messages
 messages:
@@ -20,15 +32,10 @@ messages:
   long-name: "&cSorry, but the maximum length of a warp name is {MAX} characters."
   short-name: "&cSorry, but the minimum length of a warp name is {MIN} characters."
   illegal-char: "&cSorry, but warps can only use alphanumeric characters and underscores."
-  warp-list: "&bWarps: &f"
-  warp-list-none: "&bWarps: &fNo warps exist"
+  warp-color: "&f"
+  warp-owned-color: "&a"
+  warp-list-none: "&fNo warps exist"
   limit-reached: "&cSorry, but you are not able to set any more warps."
-
-# Custom Setwarp Limits
-# To limit the number of warps a user can create, give them the permission oasiswarps.limit.[name]
-setwarp-limits:
-  noble: 1
-  magician: 2
-  lord: 4
-  imperial: 6
-  titan: 9
+  page-not-number: "&cThe page selection must be a number!"
+  page-no-exist: "&cSorry, but that page does not exist."
+  page-info: "&3There are &b{WARPS} &3warps. Viewing page &b{PAGE} &3of &b{MAX_PAGE}&3."
