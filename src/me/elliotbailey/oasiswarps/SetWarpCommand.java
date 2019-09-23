@@ -70,6 +70,7 @@ public class SetWarpCommand implements CommandExecutor {
                     String[] warp_yaml_parts = warp.split("\\.");
                     if (warp_yaml_parts.length == 2) {
                         if (warp_yaml_parts[1].equals("owner")) {
+                            if (plugin.getWarps().getString(warp_yaml_parts[0]+"."+warp_yaml_parts[1]).equals(p.getUniqueId().toString()))
                             playerWarps.add(warp_yaml_parts[0]);
                         }
                     }
