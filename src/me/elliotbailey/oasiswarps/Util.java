@@ -8,7 +8,7 @@ public class Util {
         return ChatColor.translateAlternateColorCodes('&', s);
     }
 
-    public static Double[][] safeWarpLocations() {
+    public static Double[][] safeLocations() {
         Double locations[][] = {
                 // -3 Layer (to allow for short falls)
                 {-1.0, -3.0,  1.0},
