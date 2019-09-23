@@ -28,6 +28,7 @@ messages:
   no-exist: "&cSorry, but that warp does not exist."
   warp-tp: "&3Teleporting to &b{WARP}&3..."
   warp-tp-other: "&3Teleporting &f{USER} &3to &b{WARP}&3..."
+  unsafe: "&cThat warp is unsafe and cannot be teleported to."
   not-online: "&cThat player is not online."
   long-name: "&cSorry, but the maximum length of a warp name is {MAX} characters."
   short-name: "&cSorry, but the minimum length of a warp name is {MIN} characters."
