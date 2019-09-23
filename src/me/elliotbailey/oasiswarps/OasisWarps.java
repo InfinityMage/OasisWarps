@@ -19,10 +19,9 @@ public class OasisWarps extends JavaPlugin {
         saveDefaultConfig();
         this.getCommand("setwarp").setExecutor(new SetWarpCommand(this));
         this.getCommand("warp").setExecutor(new WarpCommand(this));
-        this.getCommand("debug").setExecutor(new DebugCommand(this));
         this.getCommand("warps").setExecutor(new ListWarpsCommand(this));
         this.getCommand("delwarp").setExecutor(new DelWarpCommand(this));
-
+        this.getCommand("oasiswarps").setExecutor(new OasisWarpCommand(this));
     }
 
     public FileConfiguration getWarps() {
