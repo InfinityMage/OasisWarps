@@ -38,10 +38,81 @@ public class WarpCommand implements CommandExecutor {
                 if(args.length == 1) {
                     if (plugin.getWarps().contains(warpName)) {
 
+                        // Warp safety check
+                        if (plugin.getConfig().getBoolean("safe-warp")) {
+
+                            Boolean warpSafe = true;
+
+                            Location warpLocation = new Location(
+                                    plugin.getServer().getWorld(plugin.getWarps().getString(warpName+".world")),
+                                    plugin.getWarps().getDouble(warpName+".x"),
+                                    Math.ceil(plugin.getWarps().getDouble(warpName+".y")),
+                                    plugin.getWarps().getDouble(warpName+".z")
+                            );
+
+                            // Check for 2 air/unsolid blocks at warp with a solid block below
+                            if (warpLocation.add(0, 1, 0).getBlock().getType().isSolid() || warpLocation.getBlock().getType().toString() == "WATER") warpSafe = false;
+                            warpLocation.subtract(0, 1, 0);
+                            if (warpLocation.getBlock().getType().isSolid()) warpSafe = false;
+                            if (!warpLocation.subtract(0, 1, 0).getBlock().getType().isSolid()) warpSafe = false;
+                            warpLocation.add(0, 1, 0);
+
+                            String[] dangerous_blocks = {"LAVA","CACTUS","SWEET_BERRY_BUSH","WITHER_ROSE","MAGMA_BLOCK","COBWEB","CAMPFIRE","FIRE"};
+                            Double locations[][] = {
+                                    // -1 Layer
+                                    {-1.0, -1.0,  1.0},
+                                    {-1.0, -1.0,  0.0},
+                                    {-1.0, -1.0, -1.0},
+                                    {0.0,  -1.0,  1.0},
+                                    {0.0,  -1.0,  0.0},
+                                    {0.0,  -1.0, -1.0},
+                                    {1.0,  -1.0,  1.0},
+                                    {1.0,  -1.0,  0.0},
+                                    {1.0,  -1.0, -1.0},
+
+                                    // 0 Layer
+                                    {-1.0, 0.0,  1.0},
+                                    {-1.0, 0.0,  0.0},
+                                    {-1.0, 0.0, -1.0},
+                                    {0.0,  0.0,  1.0},
+                                    {0.0,  0.0,  0.0},
+                                    {0.0,  0.0, -1.0},
+                                    {1.0,  0.0,  1.0},
+                                    {1.0,  0.0,  0.0},
+                                    {1.0,  0.0, -1.0},
+
+                                    // 1 Layer
+                                    {-1.0, 1.0,  1.0},
+                                    {-1.0, 1.0,  0.0},
+                                    {-1.0, 1.0, -1.0},
+                                    {0.0,  1.0,  1.0},
+                                    {0.0,  1.0,  0.0},
+                                    {0.0,  1.0, -1.0},
+                                    {1.0,  1.0,  1.0},
+                                    {1.0,  1.0,  0.0},
+                                    {1.0,  1.0, -1.0},
+                            };
+
+                            for (Double[] loc : locations) {
+                                for (String block : dangerous_blocks) {
+                                    if (warpLocation.add(loc[0], loc[1], loc[2]).getBlock().getType().toString().equals(block)) {
+                                        warpSafe = false;
+                                    }
+                                    warpLocation.subtract(loc[0], loc[1], loc[2]);
+                                }
+                            }
+
+                            if (!warpSafe) {
+                                p.sendMessage(Util.format(plugin.getConfig().getString("messages.unsafe")));
+                                return true;
+                            }
+
+                        }
+
                         p.sendMessage(Util.format(plugin.getConfig().getString("messages.warp-tp").replaceAll("\\{WARP\\}", warpName)));
 
                         p.teleport(new Location(
-                                p.getServer().getWorld(plugin.getWarps().getString(warpName+".world")),
+                                plugin.getServer().getWorld(plugin.getWarps().getString(warpName+".world")),
                                 plugin.getWarps().getDouble(warpName+".x"),
                                 plugin.getWarps().getDouble(warpName+".y"),
                                 plugin.getWarps().getDouble(warpName+".z"),
@@ -66,7 +137,7 @@ public class WarpCommand implements CommandExecutor {
                             otherPlayer.sendMessage(Util.format(plugin.getConfig().getString("messages.warp-tp").replaceAll("\\{WARP\\}", warpName)));
 
                             otherPlayer.teleport(new Location(
-                                    p.getServer().getWorld(plugin.getWarps().getString(warpName+".world")),
+                                    plugin.getServer().getWorld(plugin.getWarps().getString(warpName+".world")),
                                     plugin.getWarps().getDouble(warpName+".x"),
                                     plugin.getWarps().getDouble(warpName+".y"),
                                     plugin.getWarps().getDouble(warpName+".z"),
