@@ -11,11 +11,9 @@ warp-list-amount: 25
 # To limit the number of warps a user can create, give them the permission oasiswarps.limit.[name]
 # To bypass the limit, use the permission oasiswarps.limit.bypass
 setwarp-limits:
-  noble: 1
-  magician: 2
-  lord: 4
-  imperial: 6
-  titan: 9
+  default: 1
+  vip: 3
+  epic: 5
 
 # Messages
 messages:
