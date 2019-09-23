@@ -54,68 +54,12 @@ public class WarpCommand implements CommandExecutor {
                             if (warpLocation.add(0, 1, 0).getBlock().getType().isSolid() || warpLocation.getBlock().getType().toString() == "WATER") warpSafe = false;
                             warpLocation.subtract(0, 1, 0);
                             if (warpLocation.getBlock().getType().isSolid()) warpSafe = false;
-                            if (!warpLocation.subtract(0, 1, 0).getBlock().getType().isSolid() && !warpLocation.getBlock().getType().toString().contains("CARPET")) warpSafe = false;
-                            warpLocation.add(0, 1, 0);
+                            if (!warpLocation.subtract(0, 1, 0).getBlock().getType().isSolid() && !warpLocation.getBlock().getType().toString().contains("CARPET") && !warpLocation.subtract(0, 1, 0).getBlock().getType().isSolid() && !warpLocation.subtract(0, 1, 0).getBlock().getType().isSolid()) warpSafe = false;
+                            warpLocation.add(0, 3, 0);
 
                             String[] dangerous_blocks = {"LAVA","CACTUS","SWEET_BERRY_BUSH","WITHER_ROSE","MAGMA_BLOCK","COBWEB","CAMPFIRE","FIRE"};
-                            Double locations[][] = {
-                                    // -2 Layer
-                                    {-1.0, -2.0,  1.0},
-                                    {-1.0, -2.0,  0.0},
-                                    {-1.0, -2.0, -1.0},
-                                    {0.0,  -2.0,  1.0},
-                                    {0.0,  -2.0,  0.0},
-                                    {0.0,  -2.0, -1.0},
-                                    {1.0,  -2.0,  1.0},
-                                    {1.0,  -2.0,  0.0},
-                                    {1.0,  -2.0, -1.0},
 
-                                    // -1 Layer
-                                    {-1.0, -1.0,  1.0},
-                                    {-1.0, -1.0,  0.0},
-                                    {-1.0, -1.0, -1.0},
-                                    {0.0,  -1.0,  1.0},
-                                    {0.0,  -1.0,  0.0},
-                                    {0.0,  -1.0, -1.0},
-                                    {1.0,  -1.0,  1.0},
-                                    {1.0,  -1.0,  0.0},
-                                    {1.0,  -1.0, -1.0},
-
-                                    // 0 Layer
-                                    {-1.0, 0.0,  1.0},
-                                    {-1.0, 0.0,  0.0},
-                                    {-1.0, 0.0, -1.0},
-                                    {0.0,  0.0,  1.0},
-                                    {0.0,  0.0,  0.0},
-                                    {0.0,  0.0, -1.0},
-                                    {1.0,  0.0,  1.0},
-                                    {1.0,  0.0,  0.0},
-                                    {1.0,  0.0, -1.0},
-
-                                    // 1 Layer
-                                    {-1.0, 1.0,  1.0},
-                                    {-1.0, 1.0,  0.0},
-                                    {-1.0, 1.0, -1.0},
-                                    {0.0,  1.0,  1.0},
-                                    {0.0,  1.0,  0.0},
-                                    {0.0,  1.0, -1.0},
-                                    {1.0,  1.0,  1.0},
-                                    {1.0,  1.0,  0.0},
-                                    {1.0,  1.0, -1.0},
-
-                                    // 2 Layer
-                                    {-1.0, 2.0,  1.0},
-                                    {-1.0, 2.0,  0.0},
-                                    {-1.0, 2.0, -1.0},
-                                    {0.0,  2.0,  1.0},
-                                    {0.0,  2.0,  0.0},
-                                    {0.0,  2.0, -1.0},
-                                    {1.0,  2.0,  1.0},
-                                    {1.0,  2.0,  0.0},
-                                    {1.0,  2.0, -1.0}
-                            };
-
-                            for (Double[] loc : locations) {
+                            for (Double[] loc : Util.safeWarpLocations()) {
                                 for (String block : dangerous_blocks) {
                                     if (warpLocation.add(loc[0], loc[1], loc[2]).getBlock().getType().toString().equals(block)) {
                                         warpSafe = false;
