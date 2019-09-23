@@ -92,7 +92,7 @@ public class SetWarpCommand implements CommandExecutor {
                         plugin.getWarps().set(warpName+".owner", p.getUniqueId().toString());
                         plugin.getWarps().set(warpName+".world", p.getWorld().getName());
                         plugin.getWarps().set(warpName+".x", p.getLocation().getBlockX()+0.5);
-                        plugin.getWarps().set(warpName+".y", p.getLocation().getBlockY());
+                        plugin.getWarps().set(warpName+".y", p.getLocation().getY());
                         plugin.getWarps().set(warpName+".z", p.getLocation().getBlockZ()+0.5);
                         plugin.getWarps().set(warpName+".yaw", p.getLocation().getYaw());
                         plugin.getWarps().set(warpName+".pitch", p.getLocation().getPitch());
