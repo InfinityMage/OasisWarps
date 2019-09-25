@@ -5,9 +5,13 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
-public class WarpCommand implements CommandExecutor {
+public class WarpCommand implements CommandExecutor, Listener {
 
     private OasisWarps plugin;
     public WarpCommand(OasisWarps plugin) {
@@ -41,6 +45,20 @@ public class WarpCommand implements CommandExecutor {
 
     }
 
+    private void tpToWarp(Player p, String warpName) {
+        p.teleport(new Location(
+                plugin.getServer().getWorld(plugin.getWarps().getString(warpName+".world")),
+                plugin.getWarps().getDouble(warpName+".x"),
+                plugin.getWarps().getDouble(warpName+".y"),
+                plugin.getWarps().getDouble(warpName+".z"),
+                plugin.getWarps().getInt(warpName+".yaw"),
+                plugin.getWarps().getInt(warpName+".pitch")
+        ), PlayerTeleportEvent.TeleportCause.PLUGIN);
+
+        p.sendMessage(Util.format(plugin.getConfig().getString("messages.warp-tp").replaceAll("\\{WARP\\}", warpName)));
+
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         String cmdName = cmd.getName().toLowerCase();
@@ -63,38 +81,65 @@ public class WarpCommand implements CommandExecutor {
 
                 // Normal warp
                 if(args.length == 1) {
+
                     if (plugin.getWarps().contains(warpName)) {
 
-                        // Warp safety check
-                        if (plugin.getConfig().getBoolean("safe-warp")) {
+                        int timeLeft = TimeManager.getCooldown(p.getUniqueId());
+                        if (timeLeft == 0 || p.hasPermission("oasiswarps.bypass.cooldown")) {
 
-                            Location warpLocation = new Location(
-                                    plugin.getServer().getWorld(plugin.getWarps().getString(warpName+".world")),
-                                    plugin.getWarps().getDouble(warpName+".x"),
-                                    Math.ceil(plugin.getWarps().getDouble(warpName+".y")),
-                                    plugin.getWarps().getDouble(warpName+".z")
-                            );
+                            if (plugin.getConfig().getBoolean("safe-warp")) {
 
-                            if (!isLocationSafe(warpLocation)) {
-                                p.sendMessage(Util.format(plugin.getConfig().getString("messages.unsafe")));
-                                return true;
+                                Location warpLocation = new Location(
+                                        plugin.getServer().getWorld(plugin.getWarps().getString(warpName+".world")),
+                                        plugin.getWarps().getDouble(warpName+".x"),
+                                        Math.ceil(plugin.getWarps().getDouble(warpName+".y")),
+                                        plugin.getWarps().getDouble(warpName+".z")
+                                );
+
+                                if (!isLocationSafe(warpLocation)) {
+                                    p.sendMessage(Util.format(plugin.getConfig().getString("messages.warp-unsafe")));
+                                    return true;
+                                }
+
                             }
 
+                            if (!(p.hasPermission("oasiswarps.bypass.delay")) && plugin.getConfig().getBoolean("warp-delay")) {
+
+                                p.sendMessage(Util.format(plugin.getConfig().getString("messages.warp-tp-delay").replaceAll("\\{DELAY\\}", String.valueOf(plugin.getConfig().getInt("warp-delay")))));
+
+                                TimeManager.addTeleporting(p.getUniqueId());
+
+                                new BukkitRunnable() {
+                                    @Override
+                                    public void run() {
+                                        if (TimeManager.isTeleporting(p.getUniqueId())) {
+                                            tpToWarp(p, warpName);
+                                            TimeManager.removeTeleporting(p.getUniqueId());
+                                        }
+                                    }
+                                }.runTaskLater(plugin, plugin.getConfig().getInt("warp-delay-time")*20);
+
+                            } else {
+                                tpToWarp(p, warpName);
+                            }
+
+                            TimeManager.setCooldown(p.getUniqueId(), plugin.getConfig().getInt("warp-cooldown"));
+                            new BukkitRunnable() {
+                                @Override
+                                public void run() {
+                                    int timeLeft = TimeManager.getCooldown(p.getUniqueId());
+                                    TimeManager.setCooldown(p.getUniqueId(), --timeLeft);
+                                    if(timeLeft == 0){
+                                        this.cancel();
+                                    }
+                                }
+                            }.runTaskTimer(this.plugin, 20, 20);
+                        } else {
+                            p.sendMessage(Util.format(plugin.getConfig().getString("messages.warp-cooldown").replaceAll("\\{COOLDOWN\\}", String.valueOf(timeLeft))));
                         }
 
-                        p.sendMessage(Util.format(plugin.getConfig().getString("messages.warp-tp").replaceAll("\\{WARP\\}", warpName)));
-
-                        p.teleport(new Location(
-                                plugin.getServer().getWorld(plugin.getWarps().getString(warpName+".world")),
-                                plugin.getWarps().getDouble(warpName+".x"),
-                                plugin.getWarps().getDouble(warpName+".y"),
-                                plugin.getWarps().getDouble(warpName+".z"),
-                                plugin.getWarps().getInt(warpName+".yaw"),
-                                plugin.getWarps().getInt(warpName+".pitch")
-                        ), PlayerTeleportEvent.TeleportCause.PLUGIN);
-
                     } else {
-                        p.sendMessage(Util.format(plugin.getConfig().getString("messages.no-exist")));
+                        p.sendMessage(Util.format(plugin.getConfig().getString("messages.warp-no-exist")));
                     }
                 }
 
@@ -135,6 +180,19 @@ public class WarpCommand implements CommandExecutor {
         }
 
         return true;
+
+    }
+
+    @EventHandler
+    public void move(PlayerMoveEvent e) {
+
+        if (e.getTo().getBlockX() != e.getFrom().getBlockX() || e.getTo().getBlockY() != e.getFrom().getBlockZ() || e.getTo().getBlockZ() != e.getFrom().getBlockZ()) {
+            if (TimeManager.isTeleporting(e.getPlayer().getUniqueId())) {
+                TimeManager.removeTeleporting(e.getPlayer().getUniqueId());
+                e.getPlayer().sendMessage(Util.format(plugin.getConfig().getString("messages.warp-cancelled")));
+            }
+
+        }
 
     }
 
