@@ -67,15 +67,15 @@ public class ListWarpsCommand implements CommandExecutor {
                     try {
                         page_choice = Integer.parseInt(args[0]);
                     } catch (NumberFormatException | NullPointerException nfe) {
-                        p.sendMessage(Util.format(plugin.getConfig().getString("messages.page-not-number")));
+                        p.sendMessage(Util.format(plugin.getConfig().getString("messages.warp-list-not-number")));
                     }
                 }
 
                 if (!(page_choice > pages.size())) {
-                    p.sendMessage(Util.format(plugin.getConfig().getString("messages.page-info").replaceAll("\\{PAGE\\}", String.valueOf(page_choice)).replaceAll("\\{MAX_PAGE\\}", String.valueOf(pages.size())).replaceAll("\\{WARPS\\}", String.valueOf(warpList.size()))));
+                    p.sendMessage(Util.format(plugin.getConfig().getString("messages.warp-list-info").replaceAll("\\{PAGE\\}", String.valueOf(page_choice)).replaceAll("\\{MAX_PAGE\\}", String.valueOf(pages.size())).replaceAll("\\{WARPS\\}", String.valueOf(warpList.size()))));
                     p.sendMessage(Util.format(pages.get(page_choice-1).substring(0, pages.get(page_choice-1).length() - 2)));
                 } else {
-                    p.sendMessage(Util.format(plugin.getConfig().getString("messages.page-no-exist")));
+                    p.sendMessage(Util.format(plugin.getConfig().getString("messages.warp-list-no-exist")));
                 }
 
             }
