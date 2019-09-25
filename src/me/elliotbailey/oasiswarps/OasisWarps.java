@@ -1,8 +1,10 @@
 package me.elliotbailey.oasiswarps;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
@@ -17,6 +19,10 @@ public class OasisWarps extends JavaPlugin {
     public void onEnable() {
         createWarpData();
         saveDefaultConfig();
+
+        PluginManager pm = Bukkit.getPluginManager();
+        pm.registerEvents(new WarpCommand(this), this);
+
         this.getCommand("setwarp").setExecutor(new SetWarpCommand(this));
         this.getCommand("warp").setExecutor(new WarpCommand(this));
         this.getCommand("warps").setExecutor(new ListWarpsCommand(this));
