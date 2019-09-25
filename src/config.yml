@@ -6,10 +6,17 @@ max-length: 20
 min-length: 3
 # How many warps should be displayed on each page in /warps
 warp-list-amount: 25
+# Should there be a delay before teleporting to a warp?
+warp-delay: true
+# Time in seconds to delay warp teleporting (give the permission oasiswarps.bypass.delay to bypass)
+# warp-delay must be set to true
+warp-delay-time: 5
+# Cooldown length in seconds (give the permission oasiswarps.bypass.cooldown to bypass)
+warp-cooldown: 20
 
 # Custom Setwarp Limits
 # To limit the number of warps a user can create, give them the permission oasiswarps.limit.[name]
-# To bypass the limit, use the permission oasiswarps.limit.bypass
+# To bypass the limit, use the permission oasiswarps.bypass.limit
 setwarp-limits:
   default: 1
   vip: 3
@@ -17,25 +24,29 @@ setwarp-limits:
 
 # Messages
 messages:
-  incorrect-usage: "&cIncorrect Usage! {USAGE}"
-  already-exists: "&cSorry, but that warp already exists."
-  no-permission: "&cYou do not have permission for that command!"
-  no-permission-action: "&cYou do not have the required permissions to {ACTION}!"
   warp-created: "&3Warp &b{WARP} &3created."
   warp-deleted: "&3Warp &b{WARP} &3deleted."
-  no-exist: "&cSorry, but that warp does not exist."
   warp-tp: "&3Teleporting to &b{WARP}&3..."
+  warp-tp-delay: "&3Teleporting in &b{DELAY} &3seconds. Don't move."
   warp-tp-other: "&3Teleporting &f{USER} &3to &b{WARP}&3..."
-  unsafe: "&cThat warp is unsafe and cannot be teleported to."
-  not-online: "&cThat player is not online."
-  long-name: "&cSorry, but the maximum length of a warp name is {MAX} characters."
-  short-name: "&cSorry, but the minimum length of a warp name is {MIN} characters."
-  illegal-char: "&cSorry, but warps can only use alphanumeric characters and underscores."
   warp-color: "&f"
   warp-owned-color: "&a"
   warp-list-none: "&fNo warps exist"
-  limit-reached: "&cSorry, but you are not able to set any more warps."
-  page-not-number: "&cThe page selection must be a number!"
-  page-no-exist: "&cSorry, but that page does not exist."
-  page-info: "&3There are &b{WARPS} &3warps. Viewing page &b{PAGE} &3of &b{MAX_PAGE}&3."
+  warp-list-info: "&3There are &b{WARPS} &3warps. Viewing page &b{PAGE} &3of &b{MAX_PAGE}&3."
   plugin-reload: "&aOasisWarps config reloaded."
+  # Error messages
+  incorrect-usage: "&cIncorrect Usage! {USAGE}"
+  no-permission: "&cYou do not have permission for that command!"
+  no-permission-action: "&cYou do not have the required permissions to {ACTION}!"
+  warp-already-exists: "&cSorry, but that warp already exists."
+  warp-no-exist: "&cSorry, but that warp does not exist."
+  warp-cooldown: "&cYou cannot warp for another {COOLDOWN} seconds."
+  warp-cancelled: "&cTeleport cancelled, you moved!"
+  long-name: "&cSorry, but the maximum length of a warp name is {MAX} characters."
+  short-name: "&cSorry, but the minimum length of a warp name is {MIN} characters."
+  illegal-char: "&cSorry, but warps can only use alphanumeric characters and underscores."
+  limit-reached: "&cSorry, but you are not able to set any more warps."
+  not-online: "&cThat player is not online."
+  warp-list-not-number: "&cThe page selection must be a number!"
+  warp-list-no-exist: "&cSorry, but that page does not exist."
+  warp-unsafe: "&cThat warp is unsafe and cannot be teleported to."
