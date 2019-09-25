@@ -86,7 +86,7 @@ public class SetWarpCommand implements CommandExecutor {
                     }
                 }
 
-                if (!(playerWarps.size() >= playerMaxWarps) || p.hasPermission("oasiswarps.limit.bypass")) {
+                if (!(playerWarps.size() >= playerMaxWarps) || p.hasPermission("oasiswarps.bypass.limit")) {
 
                     if (!plugin.getWarps().contains(warpName)) {
                         plugin.getWarps().set(warpName+".owner", p.getUniqueId().toString());
@@ -103,7 +103,7 @@ public class SetWarpCommand implements CommandExecutor {
                             e.printStackTrace();
                         }
                     } else {
-                        p.sendMessage(Util.format(plugin.getConfig().getString("messages.already-exists")));
+                        p.sendMessage(Util.format(plugin.getConfig().getString("messages.warp-already-exists")));
                     }
 
                 } else {
