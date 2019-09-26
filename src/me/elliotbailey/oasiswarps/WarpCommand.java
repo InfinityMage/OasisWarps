@@ -84,7 +84,7 @@ public class WarpCommand implements CommandExecutor, Listener {
                     if (plugin.getWarps().contains(warpName)) {
 
                         if (plugin.getConfig().getBoolean("per-warp-permission")) {
-                            if (!p.hasPermission("oasiswarps.warp."+warpName) && !p.hasPermission("oasiswarps.warp.bypass")) {
+                            if (!p.hasPermission("oasiswarps.warp."+warpName) && !p.hasPermission("oasiswarps.bypass.warp")) {
                                 p.sendMessage(Util.format(plugin.getConfig().getString("messages.warp-no-perm").replaceAll("\\{WARP\\}",warpName)));
                                 return true;
                             }
