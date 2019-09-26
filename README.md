@@ -1,7 +1,7 @@
 # OasisWarps
 A simple Spigot plugin for warp management, supporting versions 1.8 to 1.14.
 
-###Features
+### Features
 OasisWarps has a number of features that make the plugin very useful for servers.
 
 - Full customisability of all messages
@@ -10,17 +10,18 @@ OasisWarps has a number of features that make the plugin very useful for servers
 - Highlight the player's own warps in the warp list
 - In-depth config
 
-###Commands
+### Commands
 
 | Command | Description | Permissions |
 |:---|:---|:---|
-| `/oasiswarps [help&#124;reload]` | Display a list of commands or reload the config | `oasiswarps.reload`
+| `/oasiswarps [help\|reload]` | Display a list of commands or reload the config | `oasiswarps.reload`
 | `/setwarp <warp name>` | Set a warp at your current location | `oasiswarps.setwarp`
 | `/delwarp <warp name>` | Delete a warp | `oasiswarps.delwarp`
 | `/warp <warp name> [player]` | Teleport to warp | `oasiswarps.warp`
 | `/warps` `/listwarps` | List all the warps on the server | `oasiswarps.listwarps`
 
-###Permissions
+### Permissions
+
 | Permission | Description | 
 |:---|:---|
 | `oasiswarps.reload` | Allow access to reload the config
@@ -37,7 +38,7 @@ OasisWarps has a number of features that make the plugin very useful for servers
 | `oasiswarps.bypass.delay` | Bypass the `/warp` delay
 | `oasiswarps.listwarps` | Allow access to the `/warps` and `/listwarps` commands
 
-###Config
+### Config
 ```yaml
  # Should warps only be able to be used if the warp location is considered safe (air, no lava etc)?
 safe-warp: true
