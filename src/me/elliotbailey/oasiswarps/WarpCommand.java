@@ -40,8 +40,7 @@ public class WarpCommand implements CommandExecutor, Listener {
             }
         }
 
-        if (warpSafe) return true;
-        else return false;
+        return warpSafe;
 
     }
 
@@ -84,6 +83,13 @@ public class WarpCommand implements CommandExecutor, Listener {
 
                     if (plugin.getWarps().contains(warpName)) {
 
+                        if (plugin.getConfig().getBoolean("per-warp-permission")) {
+                            if (!p.hasPermission("oasiswarps.warp."+warpName) && !p.hasPermission("oasiswarps.warp.bypass")) {
+                                p.sendMessage(Util.format(plugin.getConfig().getString("messages.warp-no-perm").replaceAll("\\{WARP\\}",warpName)));
+                                return true;
+                            }
+                        }
+
                         int timeLeft = TimeManager.getCooldown(p.getUniqueId());
                         if (timeLeft == 0 || p.hasPermission("oasiswarps.bypass.cooldown")) {
 
@@ -105,7 +111,7 @@ public class WarpCommand implements CommandExecutor, Listener {
 
                             if (!(p.hasPermission("oasiswarps.bypass.delay")) && plugin.getConfig().getBoolean("warp-delay")) {
 
-                                p.sendMessage(Util.format(plugin.getConfig().getString("messages.warp-tp-delay").replaceAll("\\{DELAY\\}", String.valueOf(plugin.getConfig().getInt("warp-delay")))));
+                                p.sendMessage(Util.format(plugin.getConfig().getString("messages.warp-tp-delay").replaceAll("\\{DELAY\\}", String.valueOf(plugin.getConfig().getInt("warp-delay-time")))));
 
                                 TimeManager.addTeleporting(p.getUniqueId());
 
@@ -124,16 +130,19 @@ public class WarpCommand implements CommandExecutor, Listener {
                             }
 
                             TimeManager.setCooldown(p.getUniqueId(), plugin.getConfig().getInt("warp-cooldown"));
-                            new BukkitRunnable() {
-                                @Override
-                                public void run() {
-                                    int timeLeft = TimeManager.getCooldown(p.getUniqueId());
-                                    TimeManager.setCooldown(p.getUniqueId(), --timeLeft);
-                                    if(timeLeft == 0){
-                                        this.cancel();
+                            if (TimeManager.getCooldown(p.getUniqueId()) != 0) {
+                                new BukkitRunnable() {
+                                    @Override
+                                    public void run() {
+                                        int timeLeft = TimeManager.getCooldown(p.getUniqueId());
+                                        TimeManager.setCooldown(p.getUniqueId(), --timeLeft);
+                                        if(timeLeft < 1){
+                                            this.cancel();
+                                        }
                                     }
-                                }
-                            }.runTaskTimer(this.plugin, 20, 20);
+                                }.runTaskTimer(this.plugin, 20, 20);
+                            }
+
                         } else {
                             p.sendMessage(Util.format(plugin.getConfig().getString("messages.warp-cooldown").replaceAll("\\{COOLDOWN\\}", String.valueOf(timeLeft))));
                         }
@@ -141,6 +150,7 @@ public class WarpCommand implements CommandExecutor, Listener {
                     } else {
                         p.sendMessage(Util.format(plugin.getConfig().getString("messages.warp-no-exist")));
                     }
+
                 }
 
                 // Warping a specific person
@@ -186,10 +196,14 @@ public class WarpCommand implements CommandExecutor, Listener {
     @EventHandler
     public void move(PlayerMoveEvent e) {
 
-        if (e.getTo().getBlockX() != e.getFrom().getBlockX() || e.getTo().getBlockY() != e.getFrom().getBlockZ() || e.getTo().getBlockZ() != e.getFrom().getBlockZ()) {
+        if (plugin.getConfig().getBoolean("warp-cancel-on-move") && e.getTo().getBlockX() != e.getFrom().getBlockX() || e.getTo().getBlockY() != e.getFrom().getBlockZ() || e.getTo().getBlockZ() != e.getFrom().getBlockZ()) {
+
             if (TimeManager.isTeleporting(e.getPlayer().getUniqueId())) {
+
                 TimeManager.removeTeleporting(e.getPlayer().getUniqueId());
+                //TimeManager.setCooldown(e.getPlayer().getUniqueId(), 0);
                 e.getPlayer().sendMessage(Util.format(plugin.getConfig().getString("messages.warp-cancelled")));
+
             }
 
         }
