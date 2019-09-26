@@ -1,5 +1,7 @@
 # OasisWarps
-A simple Spigot plugin for warp management, supporting versions 1.8 to 1.14.
+A simple Spigot plugin for warp management, supporting versions 1.8 to 1.14. You can download the plugin from spigotmc.org by clicking [here](https://www.spigotmc.org/resources/oasiswarps-1-8-1-14.71587/).
+
+If you are experiencing and bugs or other issues, or you would simply like to request a new feature, please open a new issue on the [issue page](https://github.com/InfinityMage/OasisWarps/issues).
 
 ### Features
 OasisWarps has a number of features that make the plugin very useful for servers.
