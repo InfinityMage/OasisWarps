@@ -13,6 +13,9 @@ warp-delay: true
 warp-delay-time: 5
 # Cooldown length in seconds (give the permission oasiswarps.bypass.cooldown to bypass)
 warp-cooldown: 20
+# Should attempted teleports with a delay be cancelled if the player moves?
+# This requires there to be an active warp delay
+warp-cancel-on-move: true
 
 # Custom Setwarp Limits
 # To limit the number of warps a user can create, give them the permission oasiswarps.limit.[name]
