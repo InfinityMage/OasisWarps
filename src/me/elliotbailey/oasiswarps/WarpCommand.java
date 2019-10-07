@@ -29,14 +29,19 @@ public class WarpCommand implements CommandExecutor, Listener {
         if (!location.subtract(0, 1, 0).getBlock().getType().isSolid() && !location.getBlock().getType().toString().contains("CARPET") && !location.subtract(0, 1, 0).getBlock().getType().isSolid() && !location.subtract(0, 1, 0).getBlock().getType().isSolid()) warpSafe = false;
         location.add(0, 3, 0);
 
-        String[] dangerous_blocks = {"LAVA","CACTUS","SWEET_BERRY_BUSH","WITHER_ROSE","MAGMA_BLOCK","COBWEB","CAMPFIRE","FIRE"};
+        String[] dangerous_blocks = {"MAGMA","CACTUS","LAVA","WEB","FIRE"};
 
         for (Double[] loc : Util.safeLocations()) {
             for (String block : dangerous_blocks) {
-                if (location.add(loc[0], loc[1], loc[2]).getBlock().getType().toString().equals(block)) {
+                if (location.getBlock().getType().toString().equals(block)) {
                     warpSafe = false;
                 }
-                location.subtract(loc[0], loc[1], loc[2]);
+                if (loc[0] < 0) location.add(Math.abs(loc[0]), 0, 0);
+                else location.subtract(loc[0], 0, 0);
+                if (loc[1] < 0) location.add(0, Math.abs(loc[1]), 0);
+                else location.subtract(0, loc[1], 0);
+                if (loc[2] < 0) location.add(0, 0, Math.abs(loc[2]));
+                else location.subtract(0, 0, loc[2]);
             }
         }
 

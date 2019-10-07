@@ -1,5 +1,5 @@
 name: OasisWarps
-version: 1.0.0
+version: 1.0.1
 author: InfinityMage / Elliot Bailey
 description: A standalone warp manager built for the OasisCraft server.
 main: me.elliotbailey.oasiswarps.OasisWarps
